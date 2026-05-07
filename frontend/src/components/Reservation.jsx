@@ -1,4 +1,3 @@
-import React from "react";
 import { HiOutlineArrowNarrowRight } from "react-icons/hi";
 import axios from "axios";
 import { useState } from "react";
@@ -11,14 +10,15 @@ const Reservation = () => {
   const [email, setEmail] = useState("");
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
-  const [phone, setPhone] = useState(0);
+  const [phone, setPhone] = useState("");
   const navigate = useNavigate();
+  const apiBaseUrl = import.meta.env.VITE_API_URL || "http://localhost:4000";
 
   const handleReservation = async (e) => {
     e.preventDefault();
     try {
       const { data } = await axios.post(
-        "http://localhost:4000/reservation/send",
+        `${apiBaseUrl}/api/v1/reservation/send`,
         { firstName, lastName, email, phone, date, time },
         {
           headers: {
@@ -28,15 +28,23 @@ const Reservation = () => {
         }
       );
       toast.success(data.message);
+      const reservationDetails = {
+        reservationName: `${firstName} ${lastName}`.trim(),
+        email,
+        phone,
+        date,
+        time,
+        confirmationMessage: data.message,
+      };
       setFirstName("");
       setLastName("");
-      setPhone(0);
+      setPhone("");
       setEmail("");
       setTime("");
       setDate("");
-      navigate("/success");
+      navigate("/success", { state: reservationDetails });
     } catch (error) {
-      toast.error(error.response.data.message);
+      toast.error(error.response?.data?.message || "Unable to register table right now.");
     }
   };
 
@@ -50,7 +58,7 @@ const Reservation = () => {
           <div className="reservation_form_box">
             <h1>MAKE A RESERVATION</h1>
             <p>For Further Questions, Please Call</p>
-            <form>
+            <form onSubmit={handleReservation}>
               <div>
                 <input
                   type="text"
@@ -94,7 +102,7 @@ const Reservation = () => {
                   onChange={(e) => setPhone(e.target.value)}
                 />
               </div>
-              <button type="submit" onClick={handleReservation}>
+              <button type="submit">
                 RESERVE NOW{" "}
                 <span>
                   <HiOutlineArrowNarrowRight />

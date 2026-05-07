@@ -20,7 +20,13 @@ nav {
   padding: 25px 10px 40px 10px;
   margin-bottom: 25px;
   justify-content: space-between;
-  position: relative;
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  background: #fff;
+  z-index: 30;
   align-items: center;
   border-bottom-right-radius: 7px;
   border-bottom-left-radius: 7px;
@@ -92,9 +98,7 @@ nav svg {
 }
 @media (max-width: 1100px) {
   nav {
-    z-index: 20;
-    position: unset;
-    background: #ffffff63;
+    background: #fff;
     padding: 10px 30px;
   }
   nav::after {
@@ -166,7 +170,7 @@ nav svg {
   background-repeat: no-repeat;
   background-size: cover;
   background-position: right;
-  padding: 0 15px;
+  padding: 120px 15px 0 15px;
 }
 .heroSection .container {
   display: flex;

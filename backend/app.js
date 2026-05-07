@@ -6,12 +6,14 @@ import reservationRouter from "./routes/reservationRoute.js";
 import { dbConnection } from "./database/dbConnection.js";
 
 const app = express();
-dotenv.config({ path: "./config.env" });
+dotenv.config();
+
+const frontendUrl = process.env.FRONTEND_URL || "http://localhost:5173";
 
 app.use(
   cors({
-    origin: [process.env.FRONTEND_URL],
-    methods: ["POST"],
+    origin: [frontendUrl],
+    methods: ["GET", "POST"],
     credentials: true,
   })
 );
